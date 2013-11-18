@@ -1,0 +1,2 @@
+require '../clean'
+require '../analyze'
