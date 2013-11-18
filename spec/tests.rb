@@ -1,4 +1,5 @@
 require 'rspec'
+require '../clean.rb'
 
 describe 'raw_customers.txt exists' do
 
