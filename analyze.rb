@@ -1,24 +1,27 @@
 require 'pry'
 
-histohash = {}
-
-File.open('raw_customers.txt', 'r') do |customers|
-  customers.each do |customer|
-  first = customer.gets.to_s.match /^\S{1,}/
-  File.open('histogram.txt', 'r+') do |prefixes|
-    prefixes.each do |line|
-      line.to_s.split("")
-
-      puts line
-
-      "add to hash" unless "it's there already"
-      # histohash[pre] = value
+histohash = {"Mr." => 1}
+File.open('raw_customers.txt', 'r').each_line do |customer|
+  $first = customer.match /^\S{1,}/
+  $first = $first.to_s.split(" ")
+   
+   if histohash.include?($first) == false
+      File.open('histogram.txt', 'r+').each_line do |prefixes|
+      names = prefixes.split(" ")
+      names.each {|name| frequencies[name] +=1}
+      frequencies = frequencies.sort { |a, b| b }
+      frequencies.reverse!
+      frequencies.each { |name, frequency| puts name + " " + frequency.to_s}
     end
-  end
+      else histohash["#{$first}"] +=1
+        puts histohash
+    end
+ end
+
   #   prefix.puts line
   # end
 
-end
+
 # end
 
   # File.open('customers.csv', 'w+') do |csv|
