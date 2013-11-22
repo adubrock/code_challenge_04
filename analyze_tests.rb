@@ -12,4 +12,8 @@ describe 'analyze.rb' do
   it "output should match ('groovy_test_file.txt')" do
     File.read('./histogram.txt').should == File.read('./groovy_test_file.txt')
   end
+
+  specify "regex should match prefixes" do
+  File.read('./histogram.txt').should match(/Mr./)
+  end
 end
