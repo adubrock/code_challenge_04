@@ -1,7 +1,7 @@
 # Encoding:utf-8
 
 require 'rspec'
-# require './analyze.rb'
+require './analyze.rb'
 
 describe 'analyze.rb' do
 
@@ -13,7 +13,7 @@ describe 'analyze.rb' do
     File.read('./histogram.txt').should == File.read('./groovy_test_file.txt')
   end
 
-  specify "regex should match prefixes" do
-  File.read('./histogram.txt').should match(/Mr./)
+  specify 'regex should match prefixes' do
+    File.read('./histogram.txt').should match(/Mr./)
   end
 end
