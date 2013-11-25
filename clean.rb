@@ -22,14 +22,15 @@ File.open('suffix_words.txt').each_line do |suffix|
   suffixes << suffix.to_s.strip
 end
 
-puts "prefix, first_name, middle, last_name, suffix, phone_number, phone_extension"
+print 'prefix, first_name, middle, last_name, suffix, '
+puts 'phone_number, phone_extension'
 
 File.open('raw_customers.txt', 'r').each_line do |customer|
   # phone = customer.match(/\s*\d*\.*-*\(*\d*\)*\d*-*\(*\d*.{12}$/)
   #         .to_s.strip
   name = customer.gsub(/\s*\d*\.*-*\(*\d*\)*\d*-*\(*\d*.{12}$/, '')
          .to_s.strip
-  names = name.split(" ")
+  names = name.split(' ')
   if suffixes.include?(names.last)
     suffix = names.last
     names.pop
@@ -48,8 +49,8 @@ File.open('raw_customers.txt', 'r').each_line do |customer|
   names.length == 2 ? middle = names.last : middle = ''
   phone = customer.scan(/\d+/)
   if phone.length == 5
-      phone_number = "1.#{phone[1]}.#{phone[2]}.#{phone[3]}"
-      phone_extension = "#{phone[4]}"
+    phone_number = "1.#{phone[1]}.#{phone[2]}.#{phone[3]}"
+    phone_extension = "#{phone[4]}"
   elsif phone.length == 4
     if phone[0] == 1
       phone_number = "1.#{phone[1]}.#{phone[2]}.#{phone[3]}"
@@ -64,7 +65,6 @@ File.open('raw_customers.txt', 'r').each_line do |customer|
   else
     puts 'Invalid phone number!'
   end
-puts "#{prefix},#{first},#{middle},#{last},#{suffix},#{phone_number},#{phone_extension}"
+print "#{prefix},#{first},#{middle},"
+puts "#{last},#{suffix},#{phone_number},#{phone_extension}"
 end
-
-
