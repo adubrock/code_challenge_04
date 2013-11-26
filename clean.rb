@@ -1,20 +1,31 @@
  # Encoding:utf-8
  # Clean.rb file
 require 'csv'
+require 'optparse'
 require 'pry'
-#   arr = IO.readlines('raw_customers.txt')
-# File.open('customers.csv', 'w+') do |csv|
-#   csv.puts arr
-# end
 
-# The following regex will pull the phone numbers and whitespace
-# in front of the phone numbers:
-# /\s*\d*\.*-*\(*\d*\)*\d*-*\(*\d*.{12}$/
+options = {}
+option_parser = OptionParser.new do |opts|
+  opts.on('-p', '--prefixes PREFIXES' , 'Requires a file for prefixes') do |x|
+    options[:prefixes] = x
+  end
+  opts.on('-i', '--input INPUT' , 'requires an input file') do |y|
+    options[:input] = y
+  end
+  opts.on('-o', '--output OUTPUT' , 'requires a destination file') do |z|
+    options[:output] = z
+  end
+  opts.on('-h', '--help', 'help') do
+    puts option_parser
+  end
+end
+
+option_parser.parse!
 
 prefixes = []
 suffixes = []
 
-File.open('prefix_words.txt').each_line do |prefix|
+File.open(options[:prefixes]).each_line do |prefix|
   prefixes << prefix.to_s.strip
 end
 
@@ -22,12 +33,12 @@ File.open('suffix_words.txt').each_line do |suffix|
   suffixes << suffix.to_s.strip
 end
 
-print 'prefix, first_name, middle, last_name, suffix, '
-puts 'phone_number, phone_extension'
+File.open(options[:output], 'w') do |file|
+  file.print 'prefix, first_name, middle, last_name, suffix, '
+  file.puts 'phone_number, phone_extension'
+end
 
-File.open('raw_customers.txt', 'r').each_line do |customer|
-  # phone = customer.match(/\s*\d*\.*-*\(*\d*\)*\d*-*\(*\d*.{12}$/)
-  #         .to_s.strip
+File.open(options[:input], 'r').each_line do |customer|
   name = customer.gsub(/\s*\d*\.*-*\(*\d*\)*\d*-*\(*\d*.{12}$/, '')
          .to_s.strip
   names = name.split(' ')
@@ -65,6 +76,8 @@ File.open('raw_customers.txt', 'r').each_line do |customer|
   else
     puts 'Invalid phone number!'
   end
-print "#{prefix},#{first},#{middle},"
-puts "#{last},#{suffix},#{phone_number},#{phone_extension}"
+  File.open(options[:output], 'a+') do |file|
+    file.print "#{prefix},#{first},#{middle},"
+    file.puts "#{last},#{suffix},#{phone_number},#{phone_extension}"
+  end
 end
