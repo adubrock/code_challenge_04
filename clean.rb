@@ -25,7 +25,7 @@ option_parser.parse!
 prefixes = []
 suffixes = []
 
-File.open(options[:prefixes]).each_line do |prefix|
+File.open(options[:prefixes]='prefix_words.txt').each_line do |prefix|
   prefixes << prefix.to_s.strip
 end
 
@@ -33,12 +33,12 @@ File.open('suffix_words.txt').each_line do |suffix|
   suffixes << suffix.to_s.strip
 end
 
-File.open(options[:output], 'w') do |file|
+File.open(options[:output]='customers.csv', 'w') do |file|
   file.print 'prefix, first_name, middle, last_name, suffix, '
   file.puts 'phone_number, phone_extension'
 end
 
-File.open(options[:input], 'r').each_line do |customer|
+File.open(options[:input]='raw_customers.txt', 'r').each_line do |customer|
   name = customer.gsub(/\s*\d*\.*-*\(*\d*\)*\d*-*\(*\d*.{12}$/, '')
          .to_s.strip
   names = name.split(' ')
@@ -76,7 +76,7 @@ File.open(options[:input], 'r').each_line do |customer|
   else
     puts 'Invalid phone number!'
   end
-  File.open(options[:output], 'a+') do |file|
+  File.open(options[:output]='customers.csv', 'a+') do |file|
     file.print "#{prefix},#{first},#{middle},"
     file.puts "#{last},#{suffix},#{phone_number},#{phone_extension}"
   end
